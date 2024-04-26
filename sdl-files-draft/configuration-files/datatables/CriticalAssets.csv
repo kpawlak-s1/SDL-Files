@@ -1,0 +1,4 @@
+AssetName,AssetOwner,IP,Hostname
+CoreDB,example@doterra.com,192.168.1.1,coredb-example
+Database,dbadmin@doterra.com,10.1.1.1,UTLPG06945
+WebServer,webadmin@doterra.com,10.2.2.2,UKLMK09440

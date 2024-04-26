@@ -1,0 +1,13 @@
+step 1:
+from the pqmonitors folder, load the logvolumetracker.json file. copy its contents into the monitor configuration of your tenant
+
+step 2: 
+from the pqmonitors folder, load the logvolumetracker.p50.json file. copy its contents into the monitor configuration of your tenant
+
+optional: step 2b: raise or lower the percentile threshold from 50 ( the median) if you think you are getting too many or too few alerts
+
+step 3: from the saved searches folder, load the logs.sources.stopped.logging.json file. copy its contents into a PQ in your tenant and save it
+run it and see how the results look. if it seems too high or low, add filter statements on the rate in order to raise or lower the bar to be 
+considered worth alerting on
+
+step 4: once you have tuned it via that threshold, turn it into an alert by copying the query into an alert and specifying how you would like to be notified

@@ -1,0 +1,19 @@
+{
+    "type": "powerquery",
+    "executionIntervalMinutes": "60.0",
+    "logAttributes": {
+      "dataset": "NonAdminCritAsset",
+      "tag": "NonAdminCritAsset",
+      "queries": "NonAdminCritAsset",
+      "parser": "NonAdminCritAsset",
+      "serverHost": "NonAdminCritAsset",
+      "logfile": "NonAdminCritAsset"
+    },
+    "queries": [
+      {
+        "query": "dataSource.vendor='SentinelOne' event.type in ('IP Connect','CONNECT')| lookup AdminEmail from ItAdmins.csv by Adminusername=src.process.user| lookup AssetName from CriticalAssets.csv by Hostname=endpoint.name| lookup AssetOwner from CriticalAssets.csv by Hostname=endpoint.name| filter !(AdminEmail=*)| filter AssetName=*| group count() by src.process.user, endpoint.name, AssetName, AssetOwner",
+        "startTime": "1 hour",
+        "endTime": "0 minutes"
+      }
+    ]
+  },

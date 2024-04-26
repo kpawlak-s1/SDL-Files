@@ -1,0 +1,19 @@
+{
+    "type": "powerquery",
+    "executionIntervalMinutes": "60.0",
+    "logAttributes": {
+      "dataset": "logvolume.tracker.p50",
+      "tag": "logvolume.tracker.p50",
+      "queries": "logvolume.p50",
+      "parser": "slogvolume.p50",
+      "serverHost": "logvolume.p50",
+      "logfile": "logvolume.p50"
+    },
+    "queries": [
+      {
+        "query": "tag = 'logvolume.tracker' | group p50.logs=p50(log.count) by dataSource.name",
+        "startTime": "24 hours",
+        "endTime": "0 minutes"
+      }
+    ]
+  },

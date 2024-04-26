@@ -1,0 +1,19 @@
+{
+    "type": "powerquery",
+    "executionIntervalMinutes": "60.0",
+    "logAttributes": {
+      "dataset": "logvolume.tracker",
+      "tag": "logvolume.tracker",
+      "queries": "logvolume.tracker",
+      "parser": "slogvolume.tracker",
+      "serverHost": "logvolume.tracker",
+      "logfile": "logvolume.tracker"
+    },
+    "queries": [
+      {
+        "query": "dataSource.name = * | group log.count=count() by dataSource.name, time.hour=timebucket()",
+        "startTime": "14 days",
+        "endTime": "0 minutes"
+      }
+    ]
+  },

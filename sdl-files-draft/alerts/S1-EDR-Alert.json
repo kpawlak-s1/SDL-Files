@@ -1,0 +1,18 @@
+{
+    description: "[S1 EDR] New Applications executed out of non standard directories",
+    evaluationFrequencyMinutes: 60,
+    gracePeriodMinutes: 0,
+    renotifyPeriodMinutes: 60,
+    resolutionDelayMinutes: 0,
+    trigger: "tableRows:7 days(dataSource.vendor='SentinelOne'\n| filter !((src.process.image.path contains 'tmp'))\n| filter !(src.process.image.path contains \"C:\\\\PROGRAM FILES\\\\\")\n| filter !(src.process.image.path contains \"C:\\\\PROGRAM FILES (x86)\\\\\")\n| filter !(src.process.image.path contains \"C:\\\\Users\\\\\" and src.process.image.path contains \"\\\\AppData\")\n| group firstTime = oldest(timestamp), lastTime = newest(timestamp) by src.process.name, src.process.image.path\n\n\n| let now=queryend(), one_hour_ago = queryend() - (1000000000*60*60)    \n| let first_event_min_ago = (now - firstTime)/60/1000000000\n| filter firstTime > one_hour_ago\n| columns src.process.name, first_event_min_ago, src.process.image.path\n\n| sort -first_event_min_ago \n) > 1",
+    note: "Alert looks for nonstandard directories with new applications executed from them. First it filters out some common directories to reduce noise, the finds the oldest and newest timestamps for a process name executed from the same image path.\n\nthen is specifies searching last 70 minutes (to give a 10 minut buffer) and looks for events where the first time seen was less than that"
+  },
+  {
+    description: "[S1 EDR] Non Admin makes network connection to critical asset",
+    evaluationFrequencyMinutes: 5,
+    gracePeriodMinutes: 0,
+    note: "evaluates network connections for non admin users to critical assets. \n\nPrerequisites:\n1. populate the following CSV files\nCriticalAssets.csv\nhelpdeskAdmins.csv\nITAdmins.csv\n\n2. make sure the NonAdminCritAsset PQ monitor is running",
+    renotifyPeriodMinutes: 60,
+    resolutionDelayMinutes: 0,
+    trigger: "tableRows:1 hours(tag= \"NonAdminCritAsset\" \n| group count() by src.process.user, endpoint.name, AssetName, AssetOwner) > 1"
+  }

@@ -1,0 +1,17 @@
+| join 
+
+a = (
+tag = "logvolume.tracker" 
+| columns dataSource.name, log.count, time.hour
+)
+,
+b = (
+tag = 'logvolume.tracker' | group p50.logs=p50(log.count) by dataSource.name
+)
+
+on dataSource.name
+
+| let log.rate.ratio = (log.count / p50.logs)
+
+| filter log.rate.ratio < .25
+| sort +log.rate.ratio
