@@ -1,0 +1,1 @@
+description='Crimson Tempest added to app group 5+ times in 10 minutes' lastStatus != 'TRIGGERED' tag='alertStateChange' status='TRIGGERED'
