@@ -1,3 +1,6 @@
 1. create scripts to auto load all this content neatly
 2. go through past deployments and add alerts and dashboards
 3. add STAR rule version of alert triggers
+    3a. try using a saved search chained to star rule (may be easier, doesn't require enabled SDL alerts or PQ monitor)
+4. can i get group mapping from this: https://www.sentinelone.com/resources/sentinelone-new-ad-integration/ 
+    4a. to use in limiting detections down only to certain user groups? via a join or a datatable populated from a PQ?
