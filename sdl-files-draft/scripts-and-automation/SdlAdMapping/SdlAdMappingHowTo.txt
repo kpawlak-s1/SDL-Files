@@ -1,0 +1,8 @@
+1. create local versions of the two powershell scripts in this folder somewhere on your machine. make sure they are both in the same direcotry
+2. gather your API key from Singularity Data Lake (you need a config write key)
+    2a. replace the string 'your-api-token-here' on line 16 of the UploadADMappingtoSDL script with your config write API key
+3. run the UploadADMappingtoSDL script once and verify that the config file /datatables/AD-User-Group-Mapping.json is created
+
+4. use the below command to schedule a daily update of the /datatables/AD-User-Group-Mapping.json file via a scheduled task
+
+schtasks /create /tn "RunPowerShellScript" /tr "PowerShell.exe -File .\UploadADMappingtoSDL.ps1" /sc daily /mo 1 /st 00:05
