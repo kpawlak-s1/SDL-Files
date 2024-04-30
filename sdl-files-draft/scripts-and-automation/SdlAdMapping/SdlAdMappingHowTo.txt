@@ -6,3 +6,16 @@
 4. use the below command to schedule a daily update of the /datatables/AD-User-Group-Mapping.json file via a scheduled task
 
 schtasks /create /tn "RunPowerShellScript" /tr "PowerShell.exe -File .\UploadADMappingtoSDL.ps1" /sc daily /mo 1 /st 00:05
+
+
+5. test the lookup function to make sure things are working. here is a very simple example query where I am creating a fake set of data
+where the testusername field is "Guest" and I am looking for a group "Guests". You should change these to a username/group combination
+that actually exists in your environement
+
+Sample query:
+
+dataSource.name = 'SentinelOne' 
+| let testusername = "Guest"
+| columns dataSource.name, testusername 
+| lookup Groups from AD-User-Group-Mapping.json by UserName=testusername
+| filter Groups contains 'Guests'
