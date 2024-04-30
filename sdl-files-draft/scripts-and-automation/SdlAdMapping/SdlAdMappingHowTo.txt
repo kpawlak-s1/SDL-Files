@@ -3,19 +3,40 @@
     2a. replace the string 'your-api-token-here' on line 16 of the UploadADMappingtoSDL script with your config write API key
 3. run the UploadADMappingtoSDL script once and verify that the config file /datatables/AD-User-Group-Mapping.json is created
 
-4. use the below command to schedule a daily update of the /datatables/AD-User-Group-Mapping.json file via a scheduled task
-
-schtasks /create /tn "RunPowerShellScript" /tr "PowerShell.exe -File .\UploadADMappingtoSDL.ps1" /sc daily /mo 1 /st 00:05
-
-
-5. test the lookup function to make sure things are working. here is a very simple example query where I am creating a fake set of data
+4. test the lookup function to make sure things are working. here is a very simple example query where I am creating a fake set of data
 where the testusername field is "Guest" and I am looking for a group "Guests". You should change these to a username/group combination
 that actually exists in your environement
 
 Sample query:
 
-dataSource.name = 'SentinelOne' 
-| let testusername = "Guest"
-| columns dataSource.name, testusername 
-| lookup Groups from AD-User-Group-Mapping.json by UserName=testusername
-| filter Groups contains 'Guests'
+    dataSource.name = 'SentinelOne' 
+    | let testusername = "Guest"
+    | columns dataSource.name, testusername 
+    | lookup Groups from AD-User-Group-Mapping.json by UserName=testusername
+    | filter Groups contains 'Guests'
+
+
+
+5. Set up a recurrence to update this mapping on a regular basis
+
+    option 1: use the below command to schedule a daily update of the /datatables/AD-User-Group-Mapping.json file via a scheduled task
+
+        schtasks /create /tn "RunPowerShellScript" /tr "PowerShell.exe -File .\UploadADMappingtoSDL.ps1" /sc daily /mo 1 /st 00:05
+
+    option 2: use the sentinelone collector agent / scalyr agent to schedule integration   (sample_interval is in seconds)
+
+        use a powershell monitor: https://github.com/scalyr/samples/blob/main/configs/powershell-monitor
+
+        ex:
+
+         {
+        module:  "scalyr_agent.builtin_monitors.shell_monitor",
+        id:      "cmd",
+        command: "PowerShell.exe -File Insert-Path-to-correct-folder-on-your-device\UploadADMappingtoSDL.ps1""
+        max_characters: "10"
+	      sample_interval: 86400
+      }
+
+    option 3: use the remote ops function of the S1 EDR agent to run and schedule this script
+
+    option 4: use another external tool to schedule it
