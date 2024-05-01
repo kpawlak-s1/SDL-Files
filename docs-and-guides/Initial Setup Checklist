@@ -1,0 +1,5 @@
+1. Make sure all S1 products are enrolled to send 100% of data to Singularity Data Lake (if applicable) where they do not do so by default
+    a. Cloud Native Security: https://community.sentinelone.com/s/article/000010159
+    b. Identity: go to Configuration > System > SentinelOne XDR (see the image named "S1 Identity to XDR.png" in this same folder) and enter your xdr hostname (usually xdr.us1.sentinelone.net or similar)   and your SDL API key
+    c. Console logs??? think this is automatic now (may 2024)
+
