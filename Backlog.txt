@@ -6,3 +6,5 @@
     b. SDL Alerts
     c. PQ monitor if needed
 4. group mapping from AzureAD, Okta, etc?
+5. Write a general approach for how to analyze a new data set being onboarded
+    what are all the basic grouping / stats functions to run to find outliers and unusual behavior
