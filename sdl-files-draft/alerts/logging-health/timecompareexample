@@ -1,0 +1,20 @@
+|join
+
+a=(
+
+parser = 'ms365' Workload = * 
+| group LogsLast7Days = count() by  Workload
+| let AvgDailyLogsLast7Days = LogsLast7Days /7
+| columns Workload, AvgDailyLogsLast7Days
+),
+b= (
+parser = 'ms365' Workload = * 
+| group count = count() by timestamp= timebucket('1d'), Workload
+| let Yesterday = queryend() - (24 * 60 * 60 * 1000000000)
+| let data = timestamp<=Yesterday? "baseline" : "current" 
+| filter data="current"
+)
+
+on Workload
+| let Last24hrsLogRateVs7DayAvg = (count / AvgDailyLogsLast7Days)
+| sort -Last24hrsLogRateVs7DayAvg
