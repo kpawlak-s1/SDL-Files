@@ -1,0 +1,31 @@
+//run this query over the last 7 days
+|join
+
+a=(
+//searches for all M365 logs and counts the total number of logs per  Workload
+// calculates the average logs seen in a 24 hour period by dividing by 7
+//creates a table of the Workload and the average log rate per 24 hours
+parser = 'ms365' Workload = * 
+| group LogsLast7Days = count() by  Workload
+| let AvgDailyLogsLast7Days = LogsLast7Days /7
+| columns Workload, AvgDailyLogsLast7Days
+),
+b= (
+//searches again for all M365 logs....
+// groups count again by workload, but then also groups them by 1 day / 24 hour periods
+// creates a local variable "yesterday" which is calculated to be 24 hours before the moment at wuich you ran the query (queryend())
+// where the timestamp of the 24 hour timebucket is newer than the timestamp for "yesterday' aka 24 hours ago it tags it as "current". all other time buckets are tagged as "baseline"
+// all rows where data is not "current" (aka the timebucket is not more recent than the timestamp "yesterday") is filtered out
+parser = 'ms365' Workload = * 
+| group count = count() by timestamp= timebucket('1d'), Workload
+| let Yesterday = queryend() - (24 * 60 * 60 * 1000000000)
+| let data = timestamp<=Yesterday? "baseline" : "current" 
+| filter data="current"
+)
+
+//the two queries are joined into one table based on the Workload field, resulting in a table with the Workload, average log rate, and log count in last 24 hours
+on Workload
+// a new variable is created that compares the ratio of the count of logs in the last 24 hours to the average daily count in the last 24 hours
+| let Last24hrsLogRateVs7DayAvg = (count / AvgDailyLogsLast7Days)
+//sorts them in descending order (workloads that have a lot of logs in the last 24 hours are listed at the top)
+| sort -Last24hrsLogRateVs7DayAvg
