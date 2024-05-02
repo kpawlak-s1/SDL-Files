@@ -20,10 +20,28 @@
     description: "[Log Health] Microsoft Azure logging rate below 10% of usual volume for 1 or more Workloads",
     evaluationFrequencyMinutes: 1440,
     gracePeriodMinutes: 0,
-    renotifyPeriodMinutes: 60,
+    note: "Alerts on Workloads from Azure Event Hubs (Security Graph API, Events API) that have had less than 10% of their usual volume in the last 24 hours (compared to 7 day baseline)",
+    renotifyPeriodMinutes: 0,
     resolutionDelayMinutes: 0,
-    trigger: "tableRows:7 days(| join a = (|join a=(parser = 'ms365' Workload = * | group LogsLast7Days = count() by  Workload | let AvgDailyLogsLast7Days = LogsLast7Days /7 | columns Workload, AvgDailyLogsLast7Days), b= (parser = 'ms365' Workload = * | group count = count() by timestamp= timebucket('1d'), Workload | let Yesterday = queryend() - (24 * 60 * 60 * 1000000000) | let data = timestamp<=Yesterday? "baseline" : "current" | filter data="current") on Workload | let Last24hrsLogRateVs7DayAvg = (count / AvgDailyLogsLast7Days | sort -Last24hrsLogRateVs7DayAvg) > 1",
-    note: "Alerts on Workloads from Azure Event Hubs (Security Graph API, Events API) that have had less than 10% of their usual volume in the last 24 hours (compared to 7 day baseline)'"
+    trigger: "tableRows:7 days(|join\n\na=(\n\nparser = 'ms365' Workload = * \n| group LogsLast7Days = count() by  Workload\n| let AvgDailyLogsLast7Days = (LogsLast7Days /7)\n| columns Workload, AvgDailyLogsLast7Days\n),\nb= (\n\nparser = 'ms365' Workload = * \n| group count = count() by timestamp= timebucket('1d'), Workload\n| let Yesterday = queryend() - (24 * 60 * 60 * 1000000000)\n| let data = timestamp<=Yesterday? 'baseline' : 'current'\n| filter data='current'\n)\non Workload\n| let Last24hrsLogRateVs7DayAvg = (count / AvgDailyLogsLast7Days)\n| sort -Last24hrsLogRateVs7DayAvg) > 0"
+  },
+  {
+    description: "[Log Health] Log Source logging below 10% of usual volume",
+    evaluationFrequencyMinutes: 1440,
+    gracePeriodMinutes: 0,
+    note: "Looks for log sources that have logged (in the last 24 hours) less than 10% of their usual 24 hour log volume (measured over the last 7 days)",
+    renotifyPeriodMinutes: 0,
+    resolutionDelayMinutes: 0,
+    trigger: "tableRows:7 days(|join\n\na=(\ndataSource.name=* \n| group LogsLast7Days = count() by dataSource.name\n| let AvgDailyLogsLast7Days = LogsLast7Days /7\n| columns dataSource.name, AvgDailyLogsLast7Days\n),\nb= (\n\ndataSource.name = *\n| group count = count() by timestamp= timebucket('1d'), dataSource.name\n| let Yesterday = queryend() - (24 * 60 * 60 * 1000000000)\n| let data = timestamp<=Yesterday? 'baseline' : 'current'\n| filter data='current'\n)\n\non dataSource.name\n\n| let Last24hrsLogRateVs7DayAvg = (count / AvgDailyLogsLast7Days)\n\n| filter Last24hrsLogRateVs7DayAvg < .1) > 0"
+  },
+  {
+    description: "[Log Health] Specific EDR event.types logging less than 10% of usual level",
+    evaluationFrequencyMinutes: 1440,
+    gracePeriodMinutes: 0,
+    note: "one or more event.types from EDR data is logging (in the last 24 hours) at less than 10% of the usual rate",
+    renotifyPeriodMinutes: 0,
+    resolutionDelayMinutes: 0,
+    trigger: "tableRows:7 days(|join\n\na=(\n\ndataSource.name = 'SentinelOne' event.type=*\n| group LogsLast7Days = count() by  event.type\n| let AvgDailyLogsLast7Days = LogsLast7Days /7\n| columns event.type, AvgDailyLogsLast7Days\n),\nb= (\ndataSource.name = 'SentinelOne' event.type=* \n| group count = count() by timestamp= timebucket('1d'), event.type\n| let Yesterday = queryend() - (24 * 60 * 60 * 1000000000)\n| let data = timestamp<=Yesterday? 'baseline' : 'current'\n| filter data='current'\n)\n\n\non event.type\n| let Last24hrsLogRateVs7DayAvg = (count / AvgDailyLogsLast7Days)\n| filter Last24hrsLogRateVs7DayAvg < .1\n) > 0"
   },
 
   

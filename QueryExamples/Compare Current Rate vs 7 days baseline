@@ -19,8 +19,8 @@ b= (
 parser = 'ms365' Workload = * 
 | group count = count() by timestamp= timebucket('1d'), Workload
 | let Yesterday = queryend() - (24 * 60 * 60 * 1000000000)
-| let data = timestamp<=Yesterday? "baseline" : "current" 
-| filter data="current"
+| let data = timestamp<=Yesterday? 'baseline' : 'current'
+| filter data='current'
 )
 
 //the two queries are joined into one table based on the Workload field, resulting in a table with the Workload, average log rate, and log count in last 24 hours
