@@ -1,3 +1,5 @@
+#!/bin/bash
+
 DownloadAlerts() {
 curl --location 'https://xdr.us1.sentinelone.net//getFile' \
 --header 'Authorization: Bearer 0HuQ4SSXeO3dfoTUpOlbO3SoHCDqqlaGnVJTH8s2/Z4E-' \
