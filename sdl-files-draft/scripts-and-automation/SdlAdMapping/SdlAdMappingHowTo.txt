@@ -1,4 +1,5 @@
 1. create local versions of the two powershell scripts in this folder somewhere on your machine. make sure they are both in the same direcotry
+    1b. ADMapping.ps1 is a script i haven't tested yet. it is designed to combine the other two scripts together. Give it a try, if it fails, then use the other two scripts in conjuction
 2. gather your API key from Singularity Data Lake (you need a config write key)
     2a. replace the string 'your-api-token-here' on line 16 of the UploadADMappingtoSDL script with your config write API key
 3. run the UploadADMappingtoSDL script once and verify that the config file /datatables/AD-User-Group-Mapping.json is created
