@@ -1,8 +1,9 @@
 {
 // makes use of alert templates as documented here: https://community.sentinelone.com/s/article/000006404
 // effectively for each of these events, will create a matching alert with the description
-//you must add the templateParameters to the top of the file (outside of the alerts: [] section)
-//and then you must also put the alert stanza below into the alerts: [] section
+//inside the main alerts: [] stanza of your config file
+// you must add the {templateParameters: .... alerts [] } 
+//so basically the entire thing below is nested inside of your existing alerts[] section
 templateParameters: [
 {event: 4732, description: "A user was added to a privileged local group", threshold: 0},
 {event: 4723, description:"An attempt was made to change the password of an account", threshold: 0},
