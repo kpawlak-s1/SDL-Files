@@ -1,6 +1,14 @@
 1. create scripts to auto load all this content neatly
 2. go through past deployments and add alerts and dashboards: 
     https://docs.google.com/document/d/1TLI7z0onXsgF37ymgZbxlwHTczK3of6T56Xkx4sihy0/edit
+    https://docs.google.com/document/d/1tcgM5INRLzah2NIMyYKZ_97Ny4IupQnWnkmWIHpnw_8/edit
+        EDR
+        Identity
+        cloud
+        watchtower and MDR
+        SDL
+        SDL with managed services
+
 3. for each saved search, go back and transform them into  
     a. STAR rule (chained from saved search)
     b. SDL Alerts
