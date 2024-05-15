@@ -8,3 +8,6 @@
 4. group mapping from AzureAD, Okta, etc?
 5. Write a general approach for how to analyze a new data set being onboarded
     what are all the basic grouping / stats functions to run to find outliers and unusual behavior
+6. copy query examples from old github page
+7. create sample lookup query 
+8. create sample query to look at multiple time horizons like this one: https://sentinelone.slack.com/archives/C01RYRX7XL1/p1715797717167209
