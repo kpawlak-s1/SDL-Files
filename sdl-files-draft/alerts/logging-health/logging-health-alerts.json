@@ -8,12 +8,12 @@
     note: "Looks for situations in which the number of unique EDR event types is lower than expected. If this fires, it indicates that there is something wrong with logging of EDR telemetry (Deep Visibility)"
   },
   {
-    description: "[Log Health] Log Source logging below 10% of usual volume",
+    description: "[Log Health] Log Source logging below 10% of usual volume (advanved: PQ Monitor Based)",
     evaluationFrequencyMinutes: 60,
     gracePeriodMinutes: 0,
     renotifyPeriodMinutes: 60,
     resolutionDelayMinutes: 0,
-    trigger: "tableRows:2 hours(| join a = (tag = "logvolume.tracker" | columns dataSource.name, log.count, time.hour), b = (tag = 'logvolume.tracker' | group p50.logs=p50(log.count) by dataSource.name) on dataSource.name | let log.rate.ratio = (log.count / p50.logs) | filter log.rate.ratio < .10 | sort +log.rate.ratio ) > 1",
+    trigger: "tableRows:2 hours(| join a = (tag = 'logvolume.tracker' | columns dataSource.name, log.count, time.hour), b = (tag = 'logvolume.tracker' | group p50.logs=p50(log.count) by dataSource.name) on dataSource.name | let log.rate.ratio = (log.count / p50.logs) | filter log.rate.ratio < .10 | sort +log.rate.ratio ) > 1",
     note: "Looks for log sources (based on dataSource.name field) that are logging below their usual rate. Pre-requisites: must have set up the PowerQuery Monitors 'logvolume.tracker.json' and 'logvolume.tracker.p50json'"
   },
   {
@@ -25,14 +25,14 @@
     resolutionDelayMinutes: 0,
     trigger: "tableRows:7 days(|join\n\na=(\n\nparser = 'ms365' Workload = * \n| group LogsLast7Days = count() by  Workload\n| let AvgDailyLogsLast7Days = (LogsLast7Days /7)\n| columns Workload, AvgDailyLogsLast7Days\n),\nb= (\n\nparser = 'ms365' Workload = * \n| group count = count() by timestamp= timebucket('1d'), Workload\n| let Yesterday = queryend() - (24 * 60 * 60 * 1000000000)\n| let data = timestamp<=Yesterday? 'baseline' : 'current'\n| filter data='current'\n)\non Workload\n| let Last24hrsLogRateVs7DayAvg = (count / AvgDailyLogsLast7Days)\n| sort -Last24hrsLogRateVs7DayAvg) > 0"
   },
-  {
+{
     description: "[Log Health] Log Source logging below 10% of usual volume",
     evaluationFrequencyMinutes: 1440,
     gracePeriodMinutes: 0,
     note: "Looks for log sources that have logged (in the last 24 hours) less than 10% of their usual 24 hour log volume (measured over the last 7 days)",
     renotifyPeriodMinutes: 0,
     resolutionDelayMinutes: 0,
-    trigger: "tableRows:7 days(|join\n\na=(\ndataSource.name=* \n| group LogsLast7Days = count() by dataSource.name\n| let AvgDailyLogsLast7Days = LogsLast7Days /7\n| columns dataSource.name, AvgDailyLogsLast7Days\n),\nb= (\n\ndataSource.name = *\n| group count = count() by timestamp= timebucket('1d'), dataSource.name\n| let Yesterday = queryend() - (24 * 60 * 60 * 1000000000)\n| let data = timestamp<=Yesterday? 'baseline' : 'current'\n| filter data='current'\n)\n\non dataSource.name\n\n| let Last24hrsLogRateVs7DayAvg = (count / AvgDailyLogsLast7Days)\n\n| filter Last24hrsLogRateVs7DayAvg < .1) > 0"
+    trigger: "tableRows:7 days(|join\na=(dataSource.name=* \n| group LogsLast7Days = count() by dataSource.name\n| let AvgDailyLogsLast7Days = LogsLast7Days /7\n| columns dataSource.name, AvgDailyLogsLast7Days\n),\nb= (\ndataSource.name = *\n| group LastDailyCount = count() by timestamp= timebucket('1d'), dataSource.name\n| let Yesterday = queryend() - (24 * 60 * 60 * 1000000000)\n| let data = timestamp<=Yesterday? 'baseline' : 'current'\n| filter data='current'\n)\n\non dataSource.name\n| let Last24hrsLogRateVs7DayAvg = ( LastDailyCount / AvgDailyLogsLast7Days)\n\n| filter Last24hrsLogRateVs7DayAvg < .1) > 0"
   },
   {
     description: "[Log Health] Specific EDR event.types logging less than 10% of usual level",
