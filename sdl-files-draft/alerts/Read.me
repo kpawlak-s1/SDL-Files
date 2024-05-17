@@ -1,0 +1,12 @@
+How this folder works:
+
+possible candidate alerts and queries are in the "Candidate Alerts..." folder
+This is effectively a backlog of possible alerts and queries to go through and turn into a working, low FP format
+
+once an alert is deemed acceptable, it is placed into the All-Alerts.json file and tagged with [tag]
+
+tags may be individual dataSource.name fields, where applicable. or they may be categories where possible
+
+For example, an alert that is created based upon only fields that exist in the OCSF DNS schema type would be tagged [DNS]
+
+an alert that is based upon fields that are specific to S1 EDR and do not exist in any OCSF schema type would be tagged [S1 EDR]
