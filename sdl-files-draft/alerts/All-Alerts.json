@@ -1,0 +1,251 @@
+{
+    // Address to which alert e-mails are sent.
+    alertAddress: "",
+    alerts: [
+      {
+      description: "[Log Health] Less S1 EDR Event Types than expected",
+      evaluationFrequencyMinutes: 60,
+      gracePeriodMinutes: 0,
+      renotifyPeriodMinutes: 60,
+      resolutionDelayMinutes: 0,
+      trigger: "tableRows:7 days(dataSource.name ='SentinelOne' | group EventTypeCount = estimate_distinct(event.type) by timebucket('1hour')| filter EventTypeCount < 40) > 1",
+      note: "Looks for situations in which the number of unique EDR event types is lower than expected. If this fires, it indicates that there is something wrong with logging of EDR telemetry (Deep Visibility)"
+    },
+    {
+      description: "[Log Health] Microsoft Azure logging rate below 10% of usual volume for 1 or more Workloads",
+      evaluationFrequencyMinutes: 1440,
+      gracePeriodMinutes: 0,
+      note: "Alerts on Workloads from Azure Event Hubs (Security Graph API, Events API) that have had less than 10% of their usual volume in the last 24 hours (compared to 7 day baseline)",
+      renotifyPeriodMinutes: 0,
+      resolutionDelayMinutes: 0,
+      trigger: "tableRows:7 days(|join\n\na=(\n\nparser = 'ms365' Workload = * \n| group LogsLast7Days = count() by  Workload\n| let AvgDailyLogsLast7Days = (LogsLast7Days /7)\n| columns Workload, AvgDailyLogsLast7Days\n),\nb= (\n\nparser = 'ms365' Workload = * \n| group count = count() by timestamp= timebucket('1d'), Workload\n| let Yesterday = queryend() - (24 * 60 * 60 * 1000000000)\n| let data = timestamp<=Yesterday? 'baseline' : 'current'\n| filter data='current'\n)\non Workload\n| let Last24hrsLogRateVs7DayAvg = (count / AvgDailyLogsLast7Days)\n| sort -Last24hrsLogRateVs7DayAvg) > 0"
+    },
+    {
+      description: "[Log Health] Log Source logging below 10% of usual volume",
+      evaluationFrequencyMinutes: 1440,
+      gracePeriodMinutes: 0,
+      note: "Looks for log sources that have logged (in the last 24 hours) less than 10% of their usual 24 hour log volume (measured over the last 7 days)",
+      renotifyPeriodMinutes: 0,
+      resolutionDelayMinutes: 0,
+      trigger: "tableRows:7 days(|join\na=(dataSource.name=* \n| group LogsLast7Days = count() by dataSource.name\n| let AvgDailyLogsLast7Days = LogsLast7Days /7\n| columns dataSource.name, AvgDailyLogsLast7Days\n),\nb= (\ndataSource.name = *\n| group LastDailyCount = count() by timestamp= timebucket('1d'), dataSource.name\n| let Yesterday = queryend() - (24 * 60 * 60 * 1000000000)\n| let data = timestamp<=Yesterday? 'baseline' : 'current'\n| filter data='current'\n)\n\non dataSource.name\n| let Last24hrsLogRateVs7DayAvg = ( LastDailyCount / AvgDailyLogsLast7Days)\n\n| filter Last24hrsLogRateVs7DayAvg < .1) > 0"
+    },
+    {
+      description: "[Log Health] Specific EDR event.types logging less than 10% of usual level",
+      evaluationFrequencyMinutes: 1440,
+      gracePeriodMinutes: 0,
+      note: "one or more event.types from EDR data is logging (in the last 24 hours) at less than 10% of the usual rate",
+      renotifyPeriodMinutes: 0,
+      resolutionDelayMinutes: 0,
+      trigger: "tableRows:7 days(|join\n\na=(\n\ndataSource.name = 'SentinelOne' event.type=*\n| group LogsLast7Days = count() by  event.type\n| let AvgDailyLogsLast7Days = LogsLast7Days /7\n| columns event.type, AvgDailyLogsLast7Days\n),\nb= (\ndataSource.name = 'SentinelOne' event.type=* \n| group count = count() by timestamp= timebucket('1d'), event.type\n| let Yesterday = queryend() - (24 * 60 * 60 * 1000000000)\n| let data = timestamp<=Yesterday? 'baseline' : 'current'\n| filter data='current'\n)\n\n\non event.type\n| let Last24hrsLogRateVs7DayAvg = (count / AvgDailyLogsLast7Days)\n| filter Last24hrsLogRateVs7DayAvg < .1\n) > 0"
+    },
+      {
+        description: "O365: High File Access Rates",
+        evaluationFrequencyMinutes: 60,
+        gracePeriodMinutes: 0,
+        note: "\"\"",
+        renotifyPeriodMinutes: 60,
+        resolutionDelayMinutes: 0,
+        trigger: "24 hours(dataSource.name ='Microsoft O365' activity_name in ('FileAccessed' , 'FileAccessedExtended') unmapped.user_id != 'app@sharepoint' unmapped.user_id = * | group total = count() by unmapped.user_id | filter total > 300)",
+        type: "GROUPED"
+      },
+      {
+        description: "O365: Excessive Logons",
+        evaluationFrequencyMinutes: 15,
+        gracePeriodMinutes: 0,
+        note: "\"ruling out user type 4. this is used for key refreshes and doesn't have a username associated with it in the log from msft. excluding this to get rid of a bunch of null user \"",
+        renotifyPeriodMinutes: 60,
+        resolutionDelayMinutes: 0,
+        trigger: "1 days(dataSource.name ='Microsoft O365' activity_name = 'Logon' unmapped.user_type != 4  actor.user.email_addr = *  status_detail = 'Success' | group total = count() by actor.user.email_addr | filter total > 100)",
+        type: "GROUPED"
+      },
+      {
+        description: "O365: High File Downloads ",
+        evaluationFrequencyMinutes: 15,
+        gracePeriodMinutes: 0,
+        renotifyPeriodMinutes: 60,
+        resolutionDelayMinutes: 0,
+        trigger: "1 days(dataSource.name ='Microsoft O365' activity_name in ('FileDownloaded' ,'FileSyncDownloadedFull' ) unmapped.user_id != 'app@sharepoint' unmapped.source_file_extension !='iso' unmapped.source_file_extension !='ISO' unmapped.user_id = * | group total = count() by unmapped.user_id | filter total > 100)",
+        type: "GROUPED",
+      },
+      {
+        description: "O365: High File Modification Rates",
+        evaluationFrequencyMinutes: 15,
+        gracePeriodMinutes: 0,
+        note: "can be indicative of ransomware, attempting to read a high number of files quickly, possibly replace them with encrypted versions",
+        renotifyPeriodMinutes: 60,
+        resolutionDelayMinutes: 0,
+        trigger: "1 days(dataSource.name ='Microsoft O365' activity_name in ('FileModified','FileModifiedExtended') unmapped.user_id = * | group total = count() by unmapped.user_id | filter total > 250)",
+        type: "GROUPED"
+      },
+      {
+        description: "O365: High Mail Access Rates",
+        evaluationFrequencyMinutes: 15,
+        gracePeriodMinutes: 0,
+        note: "In testing, nobody went over 178 entries in 24 hours, going to recommend setting to 250",
+        renotifyPeriodMinutes: 60,
+        resolutionDelayMinutes: 0,
+        trigger: "1 days(dataSource.name ='Microsoft O365' activity_name='FileAccessed' unmapped.user_id = * | group total = count() by unmapped.user_id | filter total > 250)",
+        type: "GROUPED"
+      },
+      {
+        description: "O365: User Created",
+        gracePeriodMinutes: 0,
+        note: "this query should show user add events that are not adding user to group. that should include user creation. Set an alert to trigger on creation of these because it is pretty infrequent",
+        renotifyPeriodMinutes: 60,
+        resolutionDelayMinutes: 0,
+        trigger: "count:1 days(dataSource.name ='Microsoft O365' activity_name='Add User' type_name != 'Group Management: Add User') > 0"
+      },
+      {
+        description: "O365: Bulk Sharing Changes",
+        evaluationFrequencyMinutes: 15,
+        gracePeriodMinutes: 0,
+        note: "recommend to look at # of events in 24 hour period and looks for a large increment. specifically looking at per user.",
+        renotifyPeriodMinutes: 60,
+        resolutionDelayMinutes: 0,
+        trigger: "1 days(dataSource.name='Microsoft O365' activity_name = 'SharingSet'  unmapped.actor_user_email_addr = * | group total = count() by unmapped.actor_user_email_addr | filter total > 15)",
+        type: "GROUPED"
+      },
+      {
+        description: "O365: DLP Rule Matched",
+        gracePeriodMinutes: 0,
+        renotifyPeriodMinutes: 60,
+        resolutionDelayMinutes: 0,
+        trigger: "count:1 hours(activity_name = 'DlpRuleMatch' dataSource.name='Microsoft O365') > 0"
+      },
+      {
+        description: "O365: Suspicious / Unsafe Link Clicked",
+        gracePeriodMinutes: 0,
+        renotifyPeriodMinutes: 60,
+        resolutionDelayMinutes: 0,
+        trigger: "count:1 hours(dataSource.name ='Microsoft O365' activity_name='TIUrlClickData') > 0"
+      },
+      {
+        description: "O365: Mail Forwarding Rule Created",
+        gracePeriodMinutes: 0,
+        renotifyPeriodMinutes: 60,
+        resolutionDelayMinutes: 0,
+        trigger: "count:1 days(dataSource.name='Microsoft O365' finding.title = 'Creation of forwarding/redirect rule') > 0"
+      },
+      {
+        description: "O365: Suspicious Mail Item",
+        evaluationFrequencyMinutes: 15,
+        gracePeriodMinutes: 0,
+        renotifyPeriodMinutes: 60,
+        resolutionDelayMinutes: 0,
+        trigger: "1 days(dataSource.name ='Microsoft O365' activity_name='TIMailData' unmapped.delivery_action = 'Delivered' unmapped.system_overrides='[]' unmapped.recipients = * | group total = count() by unmapped.recipients | filter total > 0)",
+        type: "GROUPED"
+      },
+      {
+        description: "O365: Impossible traveler",
+        evaluationFrequencyMinutes: 15,
+        gracePeriodMinutes: 0,
+        renotifyPeriodMinutes: 60,
+        resolutionDelayMinutes: 0,
+        trigger: "1 days(dataSource.name='Microsoft O365' finding.types = 'ImpossibleTravel' unmapped.user_states = * | group total = count() by unmapped.user_states | filter total > 0)",
+        type: "GROUPED"
+      },
+      {
+        description: "O365: User Login Failures",
+        evaluationFrequencyMinutes: 15,
+        gracePeriodMinutes: 0,
+        renotifyPeriodMinutes: 60,
+        resolutionDelayMinutes: 0,
+        trigger: "1 days(dataSource.name ='Microsoft O365' activity_name='Logon' status_detail != 'Success' actor.user.email_addr = * | group total = count() by actor.user.email_addr | filter total > 0)",
+        type: "GROUPED"
+      },
+          {
+        description: "Network-Security: Scanning",
+        evaluationFrequencyMinutes: 5,
+        gracePeriodMinutes: 0,
+        note: "when using this alert, replace 10.0.0.1 with a list or range of public IPs you own so that it can capture those in addition to the private IPs",
+        renotifyPeriodMinutes: 60,
+        resolutionDelayMinutes: 0,
+        trigger: "1 hours(src.ip.address = * (net_private(dst.ip.address) or dst.ip.address in ( \"10.0.0.1\", \"10.0.0.2\")) | group total = count() by src.ip.address | filter total > 50)",
+        type: "GROUPED"
+      },
+      {
+        description: "Network-Security: Traffic Spikes",
+        gracePeriodMinutes: 0,
+        renotifyPeriodMinutes: 60,
+        resolutionDelayMinutes: 0,
+        trigger: "5 minutes(src.ip.address = * | group total = count() by src.ip.address | filter total > 3500)",
+        type: "GROUPED"
+      },
+      {
+        description: "Network-Security: Risky Application Usage",
+        evaluationFrequencyMinutes: 15,
+        gracePeriodMinutes: 0,
+        note: "usage of applications with a risk score of 4 or 5 from sophos",
+        renotifyPeriodMinutes: 60,
+        resolutionDelayMinutes: 0,
+        trigger: "1 days(dataSource.vendor ='Sophos' app_risk >=4 app_name = * | group total = count() by app_name | filter total > 0)",
+        type: "GROUPED"
+      },
+      {
+        description: "AzureAD / MSFT Entra: Account Creation",
+        gracePeriodMinutes: 0,
+        renotifyPeriodMinutes: 60,
+        resolutionDelayMinutes: 0,
+        trigger: "count:1 days(event.details = 'Add provisioning configuration') > 0"
+      },
+      {
+        description: "AzureAD / MSFT Entra: Account Deletion",
+        gracePeriodMinutes: 0,
+        renotifyPeriodMinutes: 60,
+        resolutionDelayMinutes: 0,
+        trigger: "count:1 days(event.details = 'Delete provisioning configuration') > 0"
+      },
+      {
+        description: "AzureAD / MSFT Entra: Impossible Traveler",
+        evaluationFrequencyMinutes: 15,
+        gracePeriodMinutes: 0,
+        renotifyPeriodMinutes: 60,
+        resolutionDelayMinutes: 0,
+        trigger: "tableRows:1 hours(| join a = (dataSource.name='Azure Event Hub' src.ip.address=* !(response.error_message =*) | columns timestamp, user.name, src.ip.address | group timestamp=min(timestamp) by user.name, src.ip.address | sort user.name, timestamp | let joinID=running_sum(1)), b = (dataSource.name='Azure Event Hub' src.ip.address=* !(response.error_message =*) | columns timestamp, user.name, src.ip.address | group timestamp=min(timestamp) by user.name, src.ip.address | sort user.name, timestamp | let joinID=running_sum(1)+1) on joinID\n| sort joinID \n| filter a.user.name == b.user.name\n| let distance_a_to_b = geo_distance(geo_ip_location(a.src.ip.address), geo_ip_location(b.src.ip.address))\n| filter distance_a_to_b > 500\n| let timedelta=abs((b.timestamp - a.timestamp)/1000000000/60/60)\n| let velocity_kph=distance_a_to_b/timedelta\n| filter velocity_kph > 1000) > 0"
+      },
+      {
+        description: "AzureAD / MSFT Entra: Login with MFA disabled",
+        gracePeriodMinutes: 0,
+        renotifyPeriodMinutes: 60,
+        resolutionDelayMinutes: 0,
+        trigger: "1 days(dataSource.name='Azure Event Hub' auth_requirement='singleFactorAuthentication' !(response.error_message =*) user.email_addr = * | group total = count() by user.email_addr | filter total > 0)",
+        type: "GROUPED",
+        evaluationFrequencyMinutes: 60
+      },
+      {
+        description: "AzureAD / MSFT Entra: MFA method changed/removed",
+        evaluationFrequencyMinutes: 60,
+        gracePeriodMinutes: 0,
+        renotifyPeriodMinutes: 60,
+        resolutionDelayMinutes: 0,
+        trigger: "1 days(dataSource.name='Azure Event Hub' event.details in (\"Assign Hardware Oath token\", \"Create Hardware Oath Token\",\"Delete Hardware Oath Token\",\"Update Hardware Oath Token\",\"Register TOTP secret\",\"User registered security info\", \"Admin registered security info\",\"User registered all required security info\") user.email_addr = * | group total = count() by user.email_addr | filter total > 0)",
+        type: "GROUPED"
+      },
+      {
+        description: "AzureAD / MSFT Entra: Excessive Logins attempts per minute",
+        gracePeriodMinutes: 0,
+        renotifyPeriodMinutes: 60,
+        resolutionDelayMinutes: 0,
+        trigger: "1 minutes(dataSource.name='Azure Event Hub' event.details='Sign-in activity' !(response.error_message =*) user.email_addr = * | group total = count() by user.email_addr | filter total > 5)",
+        type: "GROUPED"
+      },
+      {
+        description: "AzureAD / MSFT Entra: Excessive Failed Logins",
+        evaluationFrequencyMinutes: 15,
+        gracePeriodMinutes: 0,
+        renotifyPeriodMinutes: 60,
+        resolutionDelayMinutes: 0,
+        trigger: "8 hours(dataSource.name='Azure Event Hub' event.type='SignInLogs' (response.error_message contains \"blocked\" OR response.error_message contains \"Invalid Password\" OR response.error_message contains \"Authentication failed\" OR \"Account is locked\") user.name = * | group total = count() by user.name | filter total > 5)",
+        type: "GROUPED"
+      },
+      {
+        description: "AzureAD / MSFT Entra: Logins from Suspicious IPs/locations",
+        evaluationFrequencyMinutes: 5,
+        gracePeriodMinutes: 0,
+        note: "blocking based on IPs is handled by MSFTs threat intel of bad IPs. You can technically import your own lists as tables & we can check against them, but I don't think it is worth it. Since you don't really need to report on blocked logins by MSFT, I would look at the second query:",
+        renotifyPeriodMinutes: 60,
+        resolutionDelayMinutes: 0,
+        trigger: "tableRows:10 minutes(dataSource.name='Azure Event Hub' event.type='SignInLogs' !(response.error_message=*)\n| let country=geo_ip_country(src.ip.address)\n| filter country in (\"China\",\"Russia\", \"Iran\",\"North Korea\")\n| group Count=count() by country) > 0"
+      }
+    ]
+  }
