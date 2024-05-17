@@ -10,13 +10,14 @@
         SDL
         SDL with managed services
 
-4. for each saved search, go back and transform them into  
+4. make them match the OCSF Schema for "Security finding": https://community.sentinelone.com/s/article/000006587
+5. for each saved search, go back and transform them into  
     a. STAR rule (chained from saved search)
     b. SDL Alerts
     c. PQ monitor if needed
-5. Write a general approach for how to analyze a new data set being onboarded
+6. Write a general approach for how to analyze a new data set being onboarded
     what are all the basic grouping / stats functions to run to find outliers and unusual behavior
-6. copy query examples from old github page
-7. create sample queries (not alerts, actual sample queries to show people how to do them from a to b
+7. copy query examples from old github page
+8. create sample queries (not alerts, actual sample queries to show people how to do them from a to b
     lookup query 
     look at multiple time horizons like this one: https://sentinelone.slack.com/archives/C01RYRX7XL1/p1715797717167209
