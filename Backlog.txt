@@ -1,16 +1,5 @@
-1. Rework Network Security Alerts
-2. Okta Alerts
-3. go through past deployments and add alerts and dashboards: 
-    https://docs.google.com/document/d/1TLI7z0onXsgF37ymgZbxlwHTczK3of6T56Xkx4sihy0/edit
-    https://docs.google.com/document/d/1tcgM5INRLzah2NIMyYKZ_97Ny4IupQnWnkmWIHpnw_8/edit
-        EDR
-        Identity
-        cloud
-        watchtower and MDR
-        SDL
-        SDL with managed services
-
-4. make them match the OCSF Schema for "Security finding": https://community.sentinelone.com/s/article/000006587
+1. Work on all Alerts in the alerts folder
+2. make them match the OCSF Schema for "Security finding": https://community.sentinelone.com/s/article/000006587
 5. for each saved search, go back and transform them into  
     a. STAR rule (chained from saved search)
     b. SDL Alerts
