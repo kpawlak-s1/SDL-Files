@@ -261,7 +261,7 @@
         gracePeriodMinutes: 0,
         renotifyPeriodMinutes: 60,
         resolutionDelayMinutes: 0,
-        trigger: "tableRows:5 minutes(dataSource.name='ActivityFeed' type in ('USER_ADDED','USER_CONFIGURED_2FA','USER_DELETED','USER_ELEVATE_SESSION_SUCCESS','USER_VERIFICATION_COMPLETE','VERIFICATION_EMAIL_SENT_TO_USER')\n| group ActionCount=count() by type, username) > 0"
+        trigger: "tableRows:5 minutes(dataSource.name='ActivityFeed' type in ('USER_ADDED','USER_CONFIGURED_2FA','USER_DELETED','USER_ELEVATE_SESSION_SUCCESS','USER_VERIFICATION_COMPLETE','VERIFICATION_EMAIL_SENT_TO_USER') | group ActionCount=count() by type, username) > 0"
       }
     ]
   }
