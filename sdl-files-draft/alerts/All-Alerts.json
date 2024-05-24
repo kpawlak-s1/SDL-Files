@@ -246,6 +246,22 @@
         renotifyPeriodMinutes: 60,
         resolutionDelayMinutes: 0,
         trigger: "tableRows:10 minutes(dataSource.name='Azure Event Hub' event.type='SignInLogs' !(response.error_message=*)\n| let country=geo_ip_country(src.ip.address)\n| filter country in (\"China\",\"Russia\", \"Iran\",\"North Korea\")\n| group Count=count() by country) > 0"
+      },
+      {
+        description: "[Log Health] Marketplace App Error",
+        evaluationFrequencyMinutes: 5,
+        gracePeriodMinutes: 0,
+        note: "error occurred with a Singularity Marketplace App",
+        renotifyPeriodMinutes: 0,
+        resolutionDelayMinutes: 0,
+        trigger: "tableRows:10 minutes(dataSource.name='ActivityFeed' type in ('APPLICATION_DISABLED_ERROR','APPLICATION_ENABLE','APPLICATION_ERROR')\n| group ErrorCount = count() by type, dataSource.name) > 0"
+      },
+      {
+        description: "[S1 Platform] ",
+        gracePeriodMinutes: 0,
+        renotifyPeriodMinutes: 60,
+        resolutionDelayMinutes: 0,
+        trigger: "tableRows:5 minutes(dataSource.name='ActivityFeed' type in ('USER_ADDED','USER_CONFIGURED_2FA','USER_DELETED','USER_ELEVATE_SESSION_SUCCESS','USER_VERIFICATION_COMPLETE','VERIFICATION_EMAIL_SENT_TO_USER')\n| group ActionCount=count() by type, username) > 0"
       }
     ]
   }

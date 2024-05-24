@@ -43,6 +43,22 @@
     resolutionDelayMinutes: 0,
     trigger: "tableRows:7 days(|join\n\na=(\n\ndataSource.name = 'SentinelOne' event.type=*\n| group LogsLast7Days = count() by  event.type\n| let AvgDailyLogsLast7Days = LogsLast7Days /7\n| columns event.type, AvgDailyLogsLast7Days\n),\nb= (\ndataSource.name = 'SentinelOne' event.type=* \n| group count = count() by timestamp= timebucket('1d'), event.type\n| let Yesterday = queryend() - (24 * 60 * 60 * 1000000000)\n| let data = timestamp<=Yesterday? 'baseline' : 'current'\n| filter data='current'\n)\n\n\non event.type\n| let Last24hrsLogRateVs7DayAvg = (count / AvgDailyLogsLast7Days)\n| filter Last24hrsLogRateVs7DayAvg < .1\n) > 0"
   },
+  {
+    description: "[Log Health] Marketplace App Error",
+    evaluationFrequencyMinutes: 5,
+    gracePeriodMinutes: 0,
+    note: "error occurred with a Singularity Marketplace App",
+    renotifyPeriodMinutes: 0,
+    resolutionDelayMinutes: 0,
+    trigger: "tableRows:10 minutes(dataSource.name='ActivityFeed' type in ('APPLICATION_DISABLED_ERROR','APPLICATION_ENABLE','APPLICATION_ERROR')\n| group ErrorCount = count() by type, data.name) > 0"
+  },
+  {
+    description: "[S1 Platform] ",
+    gracePeriodMinutes: 0,
+    renotifyPeriodMinutes: 60,
+    resolutionDelayMinutes: 0,
+    trigger: "tableRows:5 minutes(dataSource.name='ActivityFeed' type in ('USER_ADDED','USER_CONFIGURED_2FA','USER_DELETED','USER_ELEVATE_SESSION_SUCCESS','USER_VERIFICATION_COMPLETE','VERIFICATION_EMAIL_SENT_TO_USER')\n| group ActionCount=count() by type, SourceUser=data.by_user, DestinationUser=data.username) > 0"
+  }
 
   
 
