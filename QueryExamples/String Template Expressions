@@ -1,0 +1,25 @@
+comparing to use case from splunk: https://docs.splunk.com/Documentation/SCS/current/Search/Stringtemplates
+
+//specifies a max of ten rows
+| limit 10 
+//in each row, create 4 columns with these values
+| let ip1='1.1.1.1', ip2='2.2.2.2', ip3='3.3.3.3', ip4='4.4.4.4'
+// create a new field Description which will append a few fields with some text
+//and then count the number of entries that fit this grouping. which should be 10, because we have 10 identical rows
+| group count() by Description = "IPs in this log include " + ip1 + ", " +ip2 +  ", " +ip3 +  ", " +ip4, ip1, ip2
+
+
+or if you want to do some math on it
+
+//specifies a max of ten rows
+| limit 10 
+//in each row, create 4 columns with these values
+| let firstNumber= 5, secondNumber= 10, thirdNumber = -40, fourthNumber = 25
+
+//now lets evaluate the lowest and highest values by creating an array of all our numbers and finding the largest and smallest
+| let numberArray = array(firstNumber, secondNumber, thirdNumber, fourthNumber)
+| let highest = array_max(numberArray)
+| let lowest = array_min(numberArray)
+
+//and finally, lets find the difference between them
+| let difference = "Diff between " + lowest + " and " + highest + " is " + abs(highest - lowest)
