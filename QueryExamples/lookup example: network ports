@@ -1,0 +1,10 @@
+requisite:
+must have a csv of common ports uplaoded and stored in the config files named /datatables/known_ports.csv     
+here is a sample: https://github.com/kpawlak-s1/dataset-query-samples/blob/main/known_ports.csv
+
+
+
+| filter dst_port = * src_port  > 0 NOT(destination_port in ("0"))
+| group count() by dst_port, src_port  , src_country , dst_ip , src_ip 
+| limit 100
+| lookup description from known_ports.csv by port=dst_port+""

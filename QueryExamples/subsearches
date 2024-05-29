@@ -1,0 +1,27 @@
+In splunk it is possible to perform subsearches: https://docs.splunk.com/Documentation/Splunk/9.2.1/Search/Aboutsubsearches
+
+where you pass the results of a query as a parameter to a second query by nesting the first query inside the second as a subsearch. 
+In the SPL example provided, the subsearch is generating a 1x1 table of the top IP address in field "clientip"
+
+
+                | join
+
+
+                a=
+                (
+                dataSource.name =* src_endpoint.ip=*
+                | columns dataSource.name, src_endpoint.ip
+                ),
+
+                b=(
+                src_endpoint.ip contains "."
+                | group EventCount=count() by src_endpoint.ip
+                | sort -EventCount 
+                | limit  1
+                | let IsTopTalker= "True"
+                | columns src_endpoint.ip, IsTopTalker
+                )
+
+                on src_endpoint.ip
+
+                | filter IsTopTalker != "True"
