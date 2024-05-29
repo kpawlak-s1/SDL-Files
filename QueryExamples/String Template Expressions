@@ -1,5 +1,6 @@
 comparing to use case from splunk: https://docs.splunk.com/Documentation/SCS/current/Search/Stringtemplates
 
+//first lets create some fake data to work on
 //specifies a max of ten rows
 | limit 10 
 //in each row, create 4 columns with these values
@@ -11,6 +12,7 @@ comparing to use case from splunk: https://docs.splunk.com/Documentation/SCS/cur
 
 or if you want to do some math on it
 
+//first lets create some fake data to work on
 //specifies a max of ten rows
 | limit 10 
 //in each row, create 4 columns with these values
