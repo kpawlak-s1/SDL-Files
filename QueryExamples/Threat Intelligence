@@ -1,0 +1,28 @@
+Step 1:
+
+Ingest your TI as logs. for example CSV or JSON format, cadence upload the logs every X hours to the logUpload API
+
+Step 2:
+
+make sure you  have a parser that will parse the threat intel. in our example you are doing so with a parser named 'intel' and generating fields md5, sha1, and sha256
+
+
+Step 3: 
+
+perform a join query on the actual data and these threat intel logs in order to generate a result
+
+here is an example:
+
+|join 
+intel = (parser contains 'intel' | group count() by md5 = data.indicator_data.file.md5, sha1 = data.indicator_data.file.sha1, sha256 = data.indicator_data.file.sha256),
+live = (tgt.file.md5= * | group count() by md5 = tgt.file.md5, sha1 = tgt.file.sha1, sha256 = tgt.file.sha256 )
+
+on md5, sha1, sha256
+
+now turn it into an alert
+
+option A: use an SDL alert and simply copy the query in
+
+option B: create a PQ monitor using this query to create a new table / log source with something like logfile="TI_Evals"
+
+and then create a STAR rule querying for logfile-"TI_Evals"
