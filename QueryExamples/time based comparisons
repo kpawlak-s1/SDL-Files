@@ -1,0 +1,42 @@
+//we are starting with a use case where we want to use logs from a service that can identify L7 apps (like a palo firewall or zscaler or netskope)
+// in this use case, we want to get a list of apps that have shown up in logs FOR THE FIRST TIME in the last 24h and compare against the list of apps from before that
+
+//full query
+app_name = * 
+| group count = count() by timestamp= timebucket('1d'), app_name
+| let Yesterday = queryend() - (24 * 60 * 60 * 1000000000)
+| let data = timestamp<=Yesterday? "baseline" : "current"
+| group apps = array_agg_distinct(app_name) by data
+| let number_of_apps = len(apps) 
+| columns "stat" = data, number_of_apps
+
+
+//query explanation line by line
+
+//filter for logs that contain an app name 
+app_name = * 
+
+//now we are going to group all of those logs to generate a table with 3 columns - count, 1 hour time bucket, and app name
+//for a given 1 hour time block, you will have 1+ rows in the table, with each row being a app name that shows up in that hour
+| group count = count() by timestamp= timebucket('1d'), app_name
+
+//now we are going to dynamically create a time field called "yesterday" which will be 24 hours before the mooment the query is executed
+//queryend() being "the time at which the query is executed"
+| let Yesterday = queryend() - (24 * 60 * 60 * 1000000000)
+
+//now we create a new field called data. if the timestamp of the 1 hour time bucket is before Yesterday (aka more that 24 hours ago)
+//then the field 'data' will be evaluated as "baseline" for that row
+// and the field 'data' will be evaluated as "current" for that row if the timestamp of the 1 hour time bucket is after Yesterday
+//aka less that 24 hours ago
+| let data = timestamp<=Yesterday? "baseline" : "current"
+
+//now we are going to group all the entrie by the data field. So we are creating a new table that has only 2 rows, as there are only
+// two values for "data" - it is either "baseline" or "current"
+//we are then creating a new field "apps" that is an array of all distinct entries for the field "app_name" for all rows with the same value for "data"
+//effetively our 2 row table has two arrays - one array with all the apps that match "baseline" and a row for all the apps that match "current"
+| group apps = array_agg_distinct(app_name) by data
+
+//now we are going to evaluate how long that array is, aka how many unique app names there are
+| let number_of_apps = len(apps) 
+// and finally creating a 2 row, 2 column table counting the number of apps for each value for "data"
+| columns "stat" = data, number_of_apps
