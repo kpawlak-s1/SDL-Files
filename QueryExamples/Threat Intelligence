@@ -1,11 +1,14 @@
-Step 1:
+Step 1: Ingest your TI
 
-Ingest your TI as logs. for example CSV or JSON format, cadence upload the logs every X hours to the logUpload API
+option 1 - ingest them as logs using the SentinelOne Collector, HEC, etc. For example, here is a document for how to ingest Threat Intelligence from Recorded Future: https://app.scalyr.com/solutions/import-recordedfuture
+
+
 
 Step 2:
 
 make sure you  have a parser that will parse the threat intel. in our example you are doing so with a parser named 'intel' and generating fields md5, sha1, and sha256
 
+![alt text](<Screenshot 2024-06-03 at 9.25.05 PM.png>)
 
 Step 3: 
 
