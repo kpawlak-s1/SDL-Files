@@ -2,13 +2,16 @@ Step 1: Ingest your TI
 
 option 1 - ingest them as logs using the SentinelOne Collector, HEC, etc. For example, here is a document for how to ingest Threat Intelligence from Recorded Future: https://app.scalyr.com/solutions/import-recordedfuture
 
-
+__________________________
 
 Step 2:
 
-make sure you  have a parser that will parse the threat intel. in our example you are doing so with a parser named 'intel' and generating fields md5, sha1, and sha256
+make sure you  have a parser that will parse the threat intel. in our example you are doing so with a parser named 'intel' and generating fields ThreatIntel.type, ThreatIntel.Family, and sha256, with the example values below
 
-![alt text](<Screenshot 2024-06-03 at 9.25.05 PM.png>)
+ThreatIntel.type, ThreatIntel.Family, sha256
+Ransomware, Ryuk, 2047bb9f00b16a6c8afba9f9a59ca4173a644b6cxxxxxxxxxxxxxxxxxx
+
+____________________________________
 
 Step 3: 
 
@@ -16,15 +19,30 @@ perform a join query on the actual data and these threat intel logs in order to 
 
 here is an example:
 
-|join 
-intel = (parser contains 'intel' | group count() by md5 = data.indicator_data.file.md5, sha1 = data.indicator_data.file.sha1, sha256 = data.indicator_data.file.sha256),
-live = (tgt.file.md5= * | group count() by md5 = tgt.file.md5, sha1 = tgt.file.sha1, sha256 = tgt.file.sha256 )
+| join
 
-on md5, sha1, sha256
+intel = {
+
+ThreatIntel.Type="Ransomware", ThreatIntel.Family="Ryuk", sha256=*
+| let tgt.file.sha256=sha256
+| columns ThreatIntel.type, ThreatIntel.Family, tgt.file.sha256
+},
+
+my_logs={ 
+tgt.file.sha256=* | group count() by tgt.file.sha256, endpoint.name
+}
+
+on tgt.file.sha256
+
+This should result in a table of any matches, which will have the fields
+
+tgt.file.sha256, endpoint.name, ThreatIntel.type, ThreatIntel.family
+
+_______________
 
 now turn it into an alert
 
-option A: use an SDL alert and simply copy the query in
+option A: use an SDL alert and simply copy the query in. In this case you can just set it to trigger for number of rows >0 since we care about all hits
 
 option B: create a PQ monitor using this query to create a new table / log source with something like logfile="TI_Evals"
 
