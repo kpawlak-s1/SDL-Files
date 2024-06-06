@@ -1,0 +1,120 @@
+{
+    graphs: [
+        {
+            label: "Log Volume (over time)",
+            facet: "sumPerSecond(value)",
+            plots: [
+                {
+                    filter: "sumPerSecond(value where tag='logVolume' metric='logBytes') * 0.00008046627",
+                    label: "Total (GB/day)"
+                }
+            ],
+            layout: {
+h: 18,
+w: 40,
+x: 20,
+y: 31
+}
+        }, {
+            title: "Log Volume (by server/dataSource.category)",
+            maxRows: 100,
+            keys: [
+{
+  attribute: "dataSource.name",
+  label: "Host"
+},
+{
+  attribute: "dataSource.vendor",
+  label: "Log"
+}
+],
+            columns: [
+                {
+                    label: "Bytes",
+                    filter: "tag='logVolume' metric='logBytes' !(k8s-cluster=*)",
+                    attribute: "value",
+                    function: "sum"
+                }
+            ],
+            sort: [
+                "-Bytes"
+            ],
+            layout: {
+h: 13,
+w: 59,
+x: 0,
+y: 18
+}
+        }, 
+        {
+          query: "| join\n(\n  tag='logVolume' metric='logBytes' | group sum = sum(value) by dataSource.category, key = \"1\"\n), (\n  | group mint = min(timestamp), maxt = max(timestamp) by key = \"1\"\n)\n  on key\n| let delta = (maxt - mint)/1000000000\n| columns delta, dataSource.category, approx_sum_sec = sum/delta * 0.00008046627\n| sort -approx_sum_sec\n|group \"GB/Day\" = sum(approx_sum_sec)",
+          title: "Ingestion rate - GB/day"
+          graphStyle: "number",
+          layout: {
+h: 6,
+w: 20,
+x: 40,
+y: 6
+}
+        ,
+        },
+        {
+          query: "tag='logVolume' metric='logBytes' \n|group Total = sum(value)/1024/1024/1024",
+          title: "Total Volume for Time Period - GB",
+          graphStyle: "number",
+          layout: {
+h: 6,
+w: 20,
+x: 40,
+y: 0
+}
+        },
+        {
+          query: "tag='logVolume' metric='logBytes'\n|group GB = sum(value)/1024/1024/1024 by logflie = dataSource.vendor ? dataSource.vendor : \"-none-\"|sort -GB\n|limit 10",
+          title: "Log File Breakdown",
+          graphStyle: "pie",
+          layout: {
+h: 18,
+w: 20,
+x: 0,
+y: 31
+}
+        },
+        {
+          query: "NOT(serverHost = 'scalyr-metalog')|group count = count()",
+          title: "Total Events for Time Period",
+          graphStyle: "number",
+          layout: {
+h: 6,
+w: 20,
+x: 40,
+y: 12
+}
+        },
+        {
+          query: "tag='logVolume' metric='logBytes'\n\n|group GB = sum(value)/1024/1024/1024 by source =  dataSource.name ? dataSource.name : host\n|sort -GB\n|limit 10",
+          title: "Top 10 Hosts",
+          graphStyle: "pie",
+          layout: {
+h: 18,
+w: 19,
+x: 0,
+y: 0
+},
+          maxPieSlices: 10
+        },
+        {
+          graphStyle: "",
+          query: "| join \n\na= (\n\n!(dataSource.name='SentinelOne') !(dataSource.vendor='SentinelOne') metric='logBytes'\n| group GB = sum(value)/1000/1000/1000 by dataSource.name\n| let ThirdPartyLogsGB = overall_sum(GB)\n| limit 1\n| columns ThirdPartyLogsGB, tag=\"volume\"\n),\n\nb= (\n(dataSource.name='SentinelOne') (dataSource.vendor='SentinelOne') metric='logBytes' (serverHost contains 'meta' || k8s-cluster contains 'meta')\n| group S1LogsGB = sum(value)/1000/1000/1000 by dataSource.name\n| columns S1LogsGB, tag=\"volume\"\n)\n\non tag\n\n| let S1GBDay = (S1LogsGB / queryspan(\"minutes\"))*60*24\n| let ThirdPartyGBDay = (ThirdPartyLogsGB / queryspan(\"minutes\"))*60*24\n| columns S1GBDay, ThirdPartyGBDay\n\n",
+          showBarsColumn: "false",
+          title: "GB of Logs",
+          layout: {
+h: 18,
+w: 20,
+x: 19,
+y: 0
+}
+        }
+    ],
+    description: ""
+}
