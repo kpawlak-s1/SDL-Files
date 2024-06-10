@@ -48,4 +48,4 @@ option A: use an SDL alert and simply copy the query in. In this case you can ju
 
 option B: create a PQ monitor using this query to create a new table / log source with something like logfile="TI_Evals"
 
-and then create a STAR rule querying for logfile-"TI_Evals"
+and then create a STAR rule querying for logfile="TI_Evals"
