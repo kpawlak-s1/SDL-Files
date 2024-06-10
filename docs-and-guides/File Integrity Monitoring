@@ -1,0 +1,15 @@
+As of the time of this writing (June 2024), S1 does not support full FIM. Some FIM use cases can be accomplished using STAR rules or SDL Alerts on data gathered by the S1 EDR agent, however it does not have 100% coverage
+
+Some of those caveats include:
+
+1. not every file type is always monitored
+2. not every registry path is always monitored
+3. there is ano "file accessed" attribution event
+and others
+
+If you would like to use the available data to address some of your FIM needs, a community created dashboard is available. It draws from recommendations from msft here:
+https://learn.microsoft.com/en-us/azure/defender-for-cloud/file-integrity-monitoring-overview
+
+You can find this sample dashboard here: https://github.com/kpawlak-s1/SDL-Files/blob/main/sdl-files-draft/configuration-files/dashboards/PCI-FIM.json
+
+to be imported into your tenant as a JSON file for a dashboard. If you do not know how to do this, get in contact with your account team or support.
