@@ -1,0 +1,430 @@
+{
+  tabs: [{"tabName":"Linux",
+graphs : [
+  {
+    graphStyle: "",
+    query: "event.type = 'File Modification' tgt.file.path contains '/bin/login'\n| columns endpoint.name, event.time, tgt.file.path, src.process.name, src.process.cmdline, tgt.file.oldPath, src.process.storyline.id, src.process.user, src.process.image.path, src.process.integrityLevel, src.process.signedStatus, src.process.publisher, src.process.parent.name",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "/bin/login",
+    layout: {
+  h: 14,
+  w: 20,
+  x: 0,
+  y: 0
+}
+  },
+    {
+    graphStyle: "",
+    query: "event.type = 'File Modification' tgt.file.path contains '/bin/passwd'\n| columns endpoint.name, event.time, tgt.file.path, src.process.name, src.process.cmdline, tgt.file.oldPath, src.process.storyline.id, src.process.user, src.process.image.path, src.process.integrityLevel, src.process.signedStatus, src.process.publisher, src.process.parent.name",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "/bin/passwd",
+    layout: {
+  h: 14,
+  w: 20,
+  x: 20,
+  y: 0
+}
+  },
+    {
+    graphStyle: "",
+    query: "event.type = 'File Modification' tgt.file.path contains '/etc' tgt.file.path matches '.conf$'\n| columns endpoint.name, event.time, tgt.file.path, src.process.name, src.process.cmdline, tgt.file.oldPath, src.process.storyline.id, src.process.user, src.process.image.path, src.process.integrityLevel, src.process.signedStatus, src.process.publisher, src.process.parent.name",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "/etc/*.conf",
+    layout: {
+      h: 14,
+      w: 20,
+      x: 40,
+      y: 0
+    }
+  },
+    {
+    graphStyle: "",
+    query: "event.type = 'File Modification' tgt.file.path contains '/usr/bin'\n| columns endpoint.name, event.time, tgt.file.path, src.process.name, src.process.cmdline, tgt.file.oldPath, src.process.storyline.id, src.process.user, src.process.image.path, src.process.integrityLevel, src.process.signedStatus, src.process.publisher, src.process.parent.name",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "/usr/bin",
+    layout: {
+      h: 14,
+      w: 20,
+      x: 0,
+      y: 14
+    }
+  },
+    {
+    graphStyle: "",
+    query: "event.type = 'File Modification' tgt.file.path contains '/usr/sbin'\n| columns endpoint.name, event.time, tgt.file.path, src.process.name, src.process.cmdline, tgt.file.oldPath, src.process.storyline.id, src.process.user, src.process.image.path, src.process.integrityLevel, src.process.signedStatus, src.process.publisher, src.process.parent.name",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "/usr/sbin",
+    layout: {
+  h: 14,
+  w: 20,
+  x: 20,
+  y: 14
+}
+  },
+    {
+    graphStyle: "",
+    query: "event.type = 'File Modification' tgt.file.path contains '/bin'\n| columns endpoint.name, event.time, tgt.file.path, src.process.name, src.process.cmdline, tgt.file.oldPath, src.process.storyline.id, src.process.user, src.process.image.path, src.process.integrityLevel, src.process.signedStatus, src.process.publisher, src.process.parent.name",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "/bin",
+    layout: {
+      h: 14,
+      w: 20,
+      x: 40,
+      y: 14
+    }
+  },
+    {
+    graphStyle: "",
+    query: "event.type = 'File Modification' tgt.file.path contains '/sbin'\n| columns endpoint.name, event.time, tgt.file.path, src.process.name, src.process.cmdline, tgt.file.oldPath, src.process.storyline.id, src.process.user, src.process.image.path, src.process.integrityLevel, src.process.signedStatus, src.process.publisher, src.process.parent.name",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "/sbin",
+    layout: {
+      h: 14,
+      w: 20,
+      x: 0,
+      y: 28
+    }
+  },
+    {
+    graphStyle: "",
+    query: "event.type = 'File Modification' tgt.file.path contains '/boot'\n| columns endpoint.name, event.time, tgt.file.path, src.process.name, src.process.cmdline, tgt.file.oldPath, src.process.storyline.id, src.process.user, src.process.image.path, src.process.integrityLevel, src.process.signedStatus, src.process.publisher, src.process.parent.name",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "/boot",
+    layout: {
+  h: 14,
+  w: 20,
+  x: 20,
+  y: 28
+}
+  },
+    {
+    graphStyle: "",
+    query: "event.type = 'File Modification' tgt.file.path contains '/usr/local/bin'\n| columns endpoint.name, event.time, tgt.file.path, src.process.name, src.process.cmdline, tgt.file.oldPath, src.process.storyline.id, src.process.user, src.process.image.path, src.process.integrityLevel, src.process.signedStatus, src.process.publisher, src.process.parent.name",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "/usr/local/bin",
+    layout: {
+      h: 14,
+      w: 20,
+      x: 40,
+      y: 28
+    }
+  },
+    {
+    graphStyle: "",
+    query: "event.type = 'File Modification' tgt.file.path contains '/opt/bin'\n| columns endpoint.name, event.time, tgt.file.path, src.process.name, src.process.cmdline, tgt.file.oldPath, src.process.storyline.id, src.process.user, src.process.image.path, src.process.integrityLevel, src.process.signedStatus, src.process.publisher, src.process.parent.name",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "/opt/bin",
+    layout: {
+      h: 14,
+      w: 20,
+      x: 0,
+      y: 42
+    }
+  },
+    {
+    graphStyle: "",
+    query: "event.type = 'File Modification' tgt.file.path contains '/etc/crontab'\n| columns endpoint.name, event.time, tgt.file.path, src.process.name, src.process.cmdline, tgt.file.oldPath, src.process.storyline.id, src.process.user, src.process.image.path, src.process.integrityLevel, src.process.signedStatus, src.process.publisher, src.process.parent.name",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "/etc/crontab",
+    layout: {
+  h: 14,
+  w: 20,
+  x: 20,
+  y: 42
+}
+  },
+    {
+    graphStyle: "",
+    query: "event.type = 'File Modification' tgt.file.path contains '/etc/init.d'\n| columns endpoint.name, event.time, tgt.file.path, src.process.name, src.process.cmdline, tgt.file.oldPath, src.process.storyline.id, src.process.user, src.process.image.path, src.process.integrityLevel, src.process.signedStatus, src.process.publisher, src.process.parent.name",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "/etc/init.d",
+    layout: {
+      h: 14,
+      w: 20,
+      x: 40,
+      y: 42
+    }
+  },
+    {
+    graphStyle: "",
+    query: "event.type = 'File Modification' tgt.file.path contains '/etc/cron.hourly'\n| columns endpoint.name, event.time, tgt.file.path, src.process.name, src.process.cmdline, tgt.file.oldPath, src.process.storyline.id, src.process.user, src.process.image.path, src.process.integrityLevel, src.process.signedStatus, src.process.publisher, src.process.parent.name",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "/etc/cron.hourly",
+    layout: {
+      h: 14,
+      w: 20,
+      x: 0,
+      y: 56
+    }
+  },
+    {
+    graphStyle: "",
+    query: "event.type = 'File Modification' tgt.file.path contains '/etc.cron.daily'\n| columns endpoint.name, event.time, tgt.file.path, src.process.name, src.process.cmdline, tgt.file.oldPath, src.process.storyline.id, src.process.user, src.process.image.path, src.process.integrityLevel, src.process.signedStatus, src.process.publisher, src.process.parent.name",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "/etc.cron.daily",
+    layout: {
+  h: 14,
+  w: 20,
+  x: 20,
+  y: 56
+}
+  },
+    {
+    graphStyle: "",
+    query: "event.type = 'File Modification' tgt.file.path contains '/etc.cron.weekly'\n| columns endpoint.name, event.time, tgt.file.path, src.process.name, src.process.cmdline, tgt.file.oldPath, src.process.storyline.id, src.process.user, src.process.image.path, src.process.integrityLevel, src.process.signedStatus, src.process.publisher, src.process.parent.name",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "/etc.cron.weekly",
+    layout: {
+      h: 14,
+      w: 20,
+      x: 40,
+      y: 56
+    }
+  },
+    {
+    graphStyle: "",
+    query: "event.type = 'File Modification' tgt.file.path contains '/etc/cron.monthly'\n| columns endpoint.name, event.time, tgt.file.path, src.process.name, src.process.cmdline, tgt.file.oldPath, src.process.storyline.id, src.process.user, src.process.image.path, src.process.integrityLevel, src.process.signedStatus, src.process.publisher, src.process.parent.name",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "/etc/cron.monthly",
+    layout: {
+      h: 14,
+      w: 20,
+      x: 0,
+      y: 70
+    }
+  }
+],
+filters: [
+  {
+    facet: "endpoint.name",
+    name: "Host"
+  }
+]
+},
+{ 
+  "tabName":"Windows - Files",
+ "graphs":[
+  {
+    graphStyle: "",
+    query: "event.type = 'File Modification' tgt.file.path contains '\\\\autoexec.bat'\n| columns endpoint.name, event.time, tgt.file.path, src.process.name, src.process.cmdline, tgt.file.oldPath, src.process.storyline.id, src.process.user, src.process.image.path, src.process.integrityLevel, src.process.signedStatus, src.process.publisher, src.process.parent.name",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "autoexec.bat"
+  },
+  {
+    graphStyle: "",
+    query: "event.type = 'File Modification' tgt.file.path contains '\\\\boot.ini'\n| columns endpoint.name, event.time, tgt.file.path, src.process.name, src.process.cmdline, tgt.file.oldPath, src.process.storyline.id, src.process.user, src.process.image.path, src.process.integrityLevel, src.process.signedStatus, src.process.publisher, src.process.parent.name",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "boot.ini"
+  },
+    {
+    graphStyle: "",
+    query: "event.type = 'File Modification' tgt.file.path contains '\\\\config.sys'\n| columns endpoint.name, event.time, tgt.file.path, src.process.name, src.process.cmdline, tgt.file.oldPath, src.process.storyline.id, src.process.user, src.process.image.path, src.process.integrityLevel, src.process.signedStatus, src.process.publisher, src.process.parent.name",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "config.sys"
+  },
+    {
+    graphStyle: "",
+    query: "event.type = 'File Modification' tgt.file.path contains '\\\\Windows\\\\system.ini'\n| columns endpoint.name, event.time, tgt.file.path, src.process.name, src.process.cmdline, tgt.file.oldPath, src.process.storyline.id, src.process.user, src.process.image.path, src.process.integrityLevel, src.process.signedStatus, src.process.publisher, src.process.parent.name",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "system.ini"
+  },
+    {
+    graphStyle: "",
+    query: "event.type = 'File Modification' tgt.file.path contains '\\\\Windows\\\\win.ini'\n| columns endpoint.name, event.time, tgt.file.path, src.process.name, src.process.cmdline, tgt.file.oldPath, src.process.storyline.id, src.process.user, src.process.image.path, src.process.integrityLevel, src.process.signedStatus, src.process.publisher, src.process.parent.name",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "win.ini"
+  },
+    {
+    graphStyle: "",
+    query: "event.type = 'File Modification' tgt.file.path contains '\\\\Windows\\\\regedit.exe'\n| columns endpoint.name, event.time, tgt.file.path, src.process.name, src.process.cmdline, tgt.file.oldPath, src.process.storyline.id, src.process.user, src.process.image.path, src.process.integrityLevel, src.process.signedStatus, src.process.publisher, src.process.parent.name",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "regedit.exe"
+  },
+    {
+    graphStyle: "",
+    query: "event.type = 'File Modification' tgt.file.path contains '\\\\Windows\\\\System32\\\\userinit.exe'\n| columns endpoint.name, event.time, tgt.file.path, src.process.name, src.process.cmdline, tgt.file.oldPath, src.process.storyline.id, src.process.user, src.process.image.path, src.process.integrityLevel, src.process.signedStatus, src.process.publisher, src.process.parent.name",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "userinit.exe"
+  },
+    {
+    graphStyle: "",
+    query: "event.type = 'File Modification' tgt.file.path contains '\\\\Windows\\\\explorer.exe'\n| columns endpoint.name, event.time, tgt.file.path, src.process.name, src.process.cmdline, tgt.file.oldPath, src.process.storyline.id, src.process.user, src.process.image.path, src.process.integrityLevel, src.process.signedStatus, src.process.publisher, src.process.parent.name",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "explorer.exe"
+  },
+    {
+    graphStyle: "",
+    query: "event.type = 'File Modification' tgt.file.path contains '\\\\Program Files\\\\Microsoft Security Client\\\\msseces.exe'\n| columns endpoint.name, event.time, tgt.file.path, src.process.name, src.process.cmdline, tgt.file.oldPath, src.process.storyline.id, src.process.user, src.process.image.path, src.process.integrityLevel, src.process.signedStatus, src.process.publisher, src.process.parent.name",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "msseces.exe"
+  }],
+ filters: [
+   {
+     facet: "endpoint.name",
+     name: "Host"
+   }
+ ]
+},
+{"tabName":"Windows - Registry Keys","graphs":[    {
+    graphStyle: "",
+    query: "event.type = 'Registry Value Modified' registry.keyPath contains 'CurrentControlSet\\\\Control\\\\hivelist'\n| columns endpoint.name, event.type, event.time, src.process.name, src.process.cmdline, src.process.storyline.id, src.process.user, src.process.parent.name, registry.keyPath, registry.value",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "CurrentControlSet|Control|hivelist"
+  },
+  {
+    graphStyle: "",
+    query: "event.type = 'Registry Value Modified' registry.keyPath contains 'CurrentControlSet\\\\Control\\\\Session Manager\\\\KnownDLLs'\n| columns endpoint.name, event.type, event.time, src.process.name, src.process.cmdline, src.process.storyline.id, src.process.user, src.process.parent.name, registry.keyPath, registry.value",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "CurrentControlSet|Control|Session Manager|KnownDLLs"
+  },
+  {
+    graphStyle: "",
+    query: "event.type = 'Registry Value Modified' registry.keyPath contains 'CurrentControlSet\\\\Services\\\\SharedAccess\\\\Parameters\\\\FirewallPolicy\\\\DomainProfile'\n| columns endpoint.name, event.type, event.time, src.process.name, src.process.cmdline, src.process.storyline.id, src.process.user, src.process.parent.name, registry.keyPath, registry.value",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "CurrentControlSet|Services|SharedAccess|Parameters|FirewallPolicy|DomainProfile"
+  },
+  {
+    graphStyle: "",
+    query: "event.type = 'Registry Value Modified' registry.keyPath contains 'CurrentControlSet\\\\Services\\\\SharedAccess\\\\Parameters\\\\FirewallPolicy\\\\PublicProfile'\n| columns endpoint.name, event.type, event.time, src.process.name, src.process.cmdline, src.process.storyline.id, src.process.user, src.process.parent.name, registry.keyPath, registry.value",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "CurrentControlSet|Services|SharedAccess|Parameters|FirewallPolicy|PublicProfile"
+  },
+  {
+    graphStyle: "",
+    query: "event.type = 'Registry Value Modified' registry.keyPath contains 'CurrentControlSet\\\\Services\\\\SharedAccess\\\\Parameters\\\\FirewallPolicy\\\\StandardProfile'\n| columns endpoint.name, event.type, event.time, src.process.name, src.process.cmdline, src.process.storyline.id, src.process.user, src.process.parent.name, registry.keyPath, registry.value",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "CurrentControlSet|Services|SharedAccess|Parameters|FirewallPolicy|StandardProfile"
+  },
+  {
+    graphStyle: "",
+    query: "event.type = 'Registry Value Modified' registry.keyPath contains 'Microsoft\\\\Cryptography\\\\OID\\\\EncodingType 0\\\\CryptSIPDllRemoveSignedDataMsg{603BCC1F-4B59-4E08-B724-D2C6297EF351}'\n| columns endpoint.name, event.type, event.time, src.process.name, src.process.cmdline, src.process.storyline.id, src.process.user, src.process.parent.name, registry.keyPath, registry.value",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "Microsoft|Cryptography|OID|EncodingType 0|CryptSIPDllRemoveSignedDataMsg{603BCC1F-4B59-4E08-B724-D2C6297EF351}"
+  },
+  {
+    graphStyle: "",
+    query: "event.type = 'Registry Value Modified' registry.keyPath contains 'Microsoft\\\\Cryptography\\\\OID\\\\EncodingType 0\\\\CryptSIPDllRemoveSignedDataMsg{C689AAB8-8E78-11D0-8C47-00C04FC295EE}'\n| columns endpoint.name, event.type, event.time, src.process.name, src.process.cmdline, src.process.storyline.id, src.process.user, src.process.parent.name, registry.keyPath, registry.value",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "Microsoft|Cryptography|OID|EncodingType 0|CryptSIPDllRemoveSignedDataMsg{C689AAB8-8E78-11D0-8C47-00C04FC295EE}"
+  },
+  {
+    graphStyle: "",
+    query: "event.type = 'Registry Value Modified' registry.keyPath contains 'Microsoft\\\\Windows NT\\\\CurrentVersion\\\\IniFileMapping\\\\SYSTEM.ini\\\\boot'\n| columns endpoint.name, event.type, event.time, src.process.name, src.process.cmdline, src.process.storyline.id, src.process.user, src.process.parent.name, registry.keyPath, registry.value",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "Microsoft|Windows NT|CurrentVersion|IniFileMapping|SYSTEM.ini|boot"
+  },
+  {
+    graphStyle: "",
+    query: "event.type = 'Registry Value Modified' registry.keyPath contains 'Microsoft\\\\Windows NT\\\\CurrentVersion\\\\IniFileMapping\\\\system.ini\\\\boot'\n| columns endpoint.name, event.type, event.time, src.process.name, src.process.cmdline, src.process.storyline.id, src.process.user, src.process.parent.name, registry.keyPath, registry.value",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "Microsoft|Windows NT|CurrentVersion|IniFileMapping|system.ini|boot"
+  },
+  {
+    graphStyle: "",
+    query: "event.type = 'Registry Value Modified' registry.keyPath contains 'Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Windows'\n| columns endpoint.name, event.type, event.time, src.process.name, src.process.cmdline, src.process.storyline.id, src.process.user, src.process.parent.name, registry.keyPath, registry.value",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "Microsoft|Windows NT|CurrentVersion|Windows"
+  },
+  {
+    graphStyle: "",
+    query: "event.type = 'Registry Value Modified' registry.keyPath contains 'Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Winlogon'\n| columns endpoint.name, event.type, event.time, src.process.name, src.process.cmdline, src.process.storyline.id, src.process.user, src.process.parent.name, registry.keyPath, registry.value",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "Microsoft|Windows NT|CurrentVersion|Winlogon"
+  },
+  {
+    graphStyle: "",
+    query: "event.type = 'Registry Value Modified' registry.keyPath contains 'Microsoft\\\\Windows\\\\CurrentVersion\\\\Explorer\\\\Shell Folders'\n| columns endpoint.name, event.type, event.time, src.process.name, src.process.cmdline, src.process.storyline.id, src.process.user, src.process.parent.name, registry.keyPath, registry.value",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "Microsoft|Windows|CurrentVersion|Explorer|Shell Folders"
+  },
+  {
+    graphStyle: "",
+    query: "event.type = 'Registry Value Modified' registry.keyPath contains 'Microsoft\\\\Windows\\\\CurrentVersion\\\\Explorer\\\\User Shell Folders'\n| columns endpoint.name, event.type, event.time, src.process.name, src.process.cmdline, src.process.storyline.id, src.process.user, src.process.parent.name, registry.keyPath, registry.value",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "Microsoft|Windows|CurrentVersion|Explorer|User Shell Folders"
+  },
+  {
+    graphStyle: "",
+    query: "event.type = 'Registry Value Modified' registry.keyPath contains 'Microsoft\\\\Windows\\\\CurrentVersion\\\\RunOnceEx'\n| columns endpoint.name, event.type, event.time, src.process.name, src.process.cmdline, src.process.storyline.id, src.process.user, src.process.parent.name, registry.keyPath, registry.value",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "Microsoft|Windows|CurrentVersion|RunOnceEx"
+  },
+  {
+    graphStyle: "",
+    query: "event.type = 'Registry Value Modified' registry.keyPath contains 'Microsoft\\\\Windows\\\\CurrentVersion\\\\RunOnce'\n| columns endpoint.name, event.type, event.time, src.process.name, src.process.cmdline, src.process.storyline.id, src.process.user, src.process.parent.name, registry.keyPath, registry.value",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "Microsoft|Windows|CurrentVersion|RunOnce"
+  },
+  {
+    graphStyle: "",
+    query: "event.type = 'Registry Value Modified' registry.keyPath contains 'Microsoft\\\\Windows\\\\CurrentVersion\\\\RunServicesOnce'\n| columns endpoint.name, event.type, event.time, src.process.name, src.process.cmdline, src.process.storyline.id, src.process.user, src.process.parent.name, registry.keyPath, registry.value",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "Microsoft|Windows|CurrentVersion|RunServicesOnce"
+  },
+  {
+    graphStyle: "",
+    query: "event.type = 'Registry Value Modified' registry.keyPath contains 'Microsoft\\\\Windows\\\\CurrentVersion\\\\RunServices'\n| columns endpoint.name, event.type, event.time, src.process.name, src.process.cmdline, src.process.storyline.id, src.process.user, src.process.parent.name, registry.keyPath, registry.value",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "Microsoft|Windows|CurrentVersion|RunServices"
+  },
+  {
+    graphStyle: "",
+    query: "event.type = 'Registry Value Modified' registry.keyPath contains 'Microsoft\\\\Windows\\\\CurrentVersion\\\\Run'\n| columns endpoint.name, event.type, event.time, src.process.name, src.process.cmdline, src.process.storyline.id, src.process.user, src.process.parent.name, registry.keyPath, registry.value",
+    showBarsColumn: "false",
+    teamEmails: ["11633_426418030212073761@s1.oem", "11633_1@s1.oem"],
+    title: "Microsoft|Windows|CurrentVersion|Run"
+  },
+  
+  ],
+filters: [
+  {
+    facet: "endpoint.name",
+    name: "Host"
+  }
+]
+}],
+  configType: "TABBED",
+  description: ""
+}
