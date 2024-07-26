@@ -4,6 +4,7 @@
 # 1. input your S1 console url (xxx.sentinelone.net typically) in line 12 for the url
 # 2. must have python installed 
 # 3. generate an API token from your S1 console and add it in line 18
+# 4. configure your Scalyr agent / S1 collector agent to monitor the output file at the end of the script, so that it will upload it consistently to SDL. Then you will have a constantly updated mapping up public IPs to users and endpoints
 import requests
 import re
 import json
