@@ -1,4 +1,9 @@
 #!/usr/bin/python
+
+#pre-requisites: 
+# 1. input your S1 console url (xxx.sentinelone.net typically) in line 12 for the url
+# 2. must have python installed 
+# 3. generate an API token from your S1 console and add it in line 18
 import requests
 import re
 import json
@@ -6,11 +11,11 @@ import json
 raw_file = "raw.txt"
 edited_file="clean.txt"
 
-url = "https://demo.sentinelone.net/web/api/v2.1/agents"
+url = "https://YOUR-S1-URL-HERE/web/api/v2.1/agents"
 
 payload = {}
 headers = {
-  'Authorization': 'ApiToken eyJraWQiOiJ1cy1lYXN0LTEtcHJvZC0wIiwiYWxnIjoiRVMyNTYifQ.eyJzdWIiOiJreWxlLnBhd2xha0BzZW50aW5lbG9uZS5jb20iLCJpc3MiOiJhdXRobi11cy1lYXN0LTEtcHJvZCIsImRlcGxveW1lbnRfaWQiOiI4NjA2MSIsInR5cGUiOiJ1c2VyIiwiZXhwIjoxNzI0NjAyNTU1LCJpYXQiOjE3MjIwMTA1NTUsImp0aSI6ImVjY2QxNzYyLTc1OWYtNGQ5ZS05YjE2LTBkMmY1Y2E3NGFjMyJ9.2WPx_YhmOjPu9jZHgbPRYFGQw80JXIFTSS0iKNyQMMDOeUaWQCWqtjimHNvWNI4ZdQyZKHzV89sntyEqKT_hLw'
+  'Authorization': 'ApiToken YOUR_API_TOKEN_HERE'
 }
 
 response = requests.request("GET", url, headers=headers, data=payload)
